@@ -26,6 +26,7 @@
 - [LSPSaga](https://github.com/glepnir/lspsaga.nvim)
 - [indent-blankline](https://github.com/lukas-reineke/indent-blankline.nvim)
 - [nvim-ts-rainbow](https://github.com/p00f/nvim-ts-rainbow)
+- [Barbecue](https://github.com/utilyre/barbecue.nvim)
 
 ## ⬇️ Installation
 

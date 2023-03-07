@@ -162,7 +162,7 @@ local function setup(configs)
       ['@label'] = { fg = colors.cyan, },
 
       ['@keyword'] = { fg = colors.pink, },
-      ['@keyword.function'] = { fg = colors.cyan, },
+      ['@keyword.function'] = { fg = colors.pink, },
       ['@keyword.operator'] = { fg = colors.pink, },
       ['@operator'] = { fg = colors.pink, },
       ['@exception'] = { fg = colors.purple, },

@@ -200,6 +200,22 @@ local function setup(configs)
       ['@typeParameter'] = { fg = colors.cyan },
       ['@decorator'] = { fg = colors.cyan },
 
+        -- LSP Semantic (0.9+)
+      ['@lsp.type.class'] = { fg = colors.cyan },
+      ['@lsp.type.enum'] = { fg = colors.cyan },
+      ['@lsp.type.decorator'] = { fg = colors.green },
+      ['@lsp.type.enumMember'] = { fg = colors.purple },
+      ['@lsp.type.function'] = { fg = colors.green, },
+      ['@lsp.type.interface'] = { fg = colors.cyan },
+      ['@lsp.type.macro'] = { fg = colors.cyan },
+      ['@lsp.type.method'] = { fg = colors.green, },
+      ['@lsp.type.namespace'] = { fg = colors.orange, },
+      ['@lsp.type.parameter'] = { fg = colors.orange, },
+      ['@lsp.type.property'] = { fg = colors.purple, },
+      ['@lsp.type.struct'] = { fg = colors.cyan },
+      ['@lsp.type.type'] = { fg = colors.bright_cyan, },
+      ['@lsp.type.variable'] = { fg = colors.fg, },
+
       -- HTML
       htmlArg = { fg = colors.green, },
       htmlBold = { fg = colors.yellow, bold = true, },
@@ -365,10 +381,17 @@ local function setup(configs)
       CmpItemAbbrDeprecated = { fg = colors.white, bg = colors.menu, },
       CmpItemAbbrMatch = { fg = colors.cyan, bg = colors.menu, },
 
-      --barbar
-      BufferCurrentTarget = { fg = colors.red, },
-      BufferVisibleTarget = { fg = colors.red, },
-      BufferInactiveTarget = { fg = colors.red, },
+      -- barbar
+      BufferVisibleTarget = { fg = colors.red },
+      BufferTabpages = { fg = colors.nontext, bg = colors.black, bold = true },
+      BufferTabpageFill = { fg = colors.nontext, bg = colors.black },
+      BufferCurrentSign = { fg = colors.purple },
+      BufferCurrentTarget = { fg = colors.red },
+      BufferInactive = { fg = colors.comment, bg = colors.black, italic = true },
+      BufferInactiveIndex = { fg = colors.nontext, bg = colors.black, italic = true },
+      BufferInactiveMod = { fg = colors.yellow, bg = colors.black, italic = true },
+      BufferInactiveSign = { fg = colors.nontext, bg = colors.black, italic = true },
+      BufferInactiveTarget = { fg = colors.red, bg = colors.black, bold = true },
 
       -- Compe
       CompeDocumentation = { link = "Pmenu" },

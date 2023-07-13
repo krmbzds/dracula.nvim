@@ -23,9 +23,11 @@
 ---@field ctermbg integer Sets background of cterm color |highlight-ctermbg|
 ---@field cterm table cterm attribute map, like |highlight-args|.
 
+---@alias HighlightGroups table<string, Highlight>
+
 ---setup highlight groups
----@param configs DefaultConfig
----@return table<string, Highlight>
+---@param configs DraculaConfig
+---@return HighlightGroups
 ---@nodiscard
 local function setup(configs)
    local colors = configs.colors
@@ -323,6 +325,7 @@ local function setup(configs)
       BufferLineIndicatorSelected = { fg = colors.purple, },
       BufferLineFill = { bg = colors.black, },
       BufferLineBufferSelected = { bg = colors.bg, },
+      BufferLineSeparator = { fg = colors.black },
 
       -- LSP
       DiagnosticError = { fg = colors.red, },
@@ -473,6 +476,42 @@ local function setup(configs)
       AlphaShortcut = { fg = colors.orange },
       AlphaFooter = { fg = colors.purple, italic = true },
 
+      -- dap UI
+      DapUIPlayPause = { fg = colors.bright_green },
+      DapUIRestart = { fg = colors.green },
+      DapUIStop = { fg = colors.red },
+      DapUIStepOver = { fg = colors.cyan },
+      DapUIStepInto = { fg = colors.cyan },
+      DapUIStepOut = { fg = colors.cyan },
+      DapUIStepBack = { fg = colors.cyan },
+      DapUIType = { fg = colors.bright_blue },
+      DapUIScope = { fg = colors.bright_cyan },
+      DapUIModifiedValue = { fg = colors.bright_cyan, bold = true },
+      DapUIDecoration = { fg = colors.bright_cyan },
+      DapUIThread = { fg = colors.bright_green },
+      DapUIStoppedThread = { fg = colors.bright_cyan },
+      DapUISource = { fg = colors.bright_blue },
+      DapUILineNumber = { fg = colors.bright_cyan },
+      DapUIFloatBorder = { fg = colors.bright_cyan },
+      DapUIWatchesEmpty = { fg = colors.pink },
+      DapUIWatchesValue = { fg = colors.bright_green },
+      DapUIWatchesError = { fg = colors.pink },
+      DapUIBreakpointsPath = { fg = colors.bright_cyan },
+      DapUIBreakpointsInfo = { fg = colors.bright_green },
+      DapUIBreakpointsCurrentLine = { fg = colors.bright_green, bold = true },
+      DapStoppedLine = { default = true, link = 'Visual' },
+      DapUIWinSelect = { fg = colors.bright_cyan, bold = true },
+
+      -- Notify
+      NotifyInfoIcon = { fg = colors.green },
+      NotifyInfoTitle = { fg = colors.green },
+      NotifyInfoBorder = { fg = "#2C453F" },
+      NotifyErrorIcon = { fg = colors.red },
+      NotifyErrorTitle = { fg = colors.red },
+      NotifyErrorBorder = { fg = "#DD6E6B" },
+      NotifyWarnIcon = { fg = colors.orange },
+      NotifyWarnTitle = { fg = colors.orange },
+      NotifyWarnBorder = { fg = "#785637" },
    }
 end
 

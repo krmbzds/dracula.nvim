@@ -4,14 +4,14 @@ local cmd = vim.cmd
 local nvim_set_hl = vim.api.nvim_set_hl
 local tbl_deep_extend = vim.tbl_deep_extend
 
----@class DefaultConfig
+---@class DraculaConfig
 ---@field italic_comment boolean
 ---@field transparent_bg boolean
 ---@field show_end_of_buffer boolean
 ---@field lualine_bg_color string?
 ---@field colors Palette
 ---@field theme string?
----@field overrides table<string, Highlight>
+---@field overrides HighlightGroups | fun(colors: Palette): HighlightGroups
 local DEFAULT_CONFIG = {
    italic_comment = false,
    transparent_bg = false,
@@ -52,8 +52,19 @@ local function apply_term_colors(colors)
    g.terminal_color_foreground = colors.fg
 end
 
+--- override colors with colors
+---@param groups HighlightGroups
+---@param overrides HighlightGroups
+---@return HighlightGroups
+local function override_groups(groups, overrides)
+   for group, setting in pairs(overrides) do
+      groups[group] = setting
+   end
+   return groups
+end
+
 ---apply dracula colorscheme
----@param configs DefaultConfig
+---@param configs DraculaConfig
 local function apply(configs)
    local colors = configs.colors
    apply_term_colors(colors)
@@ -66,8 +77,10 @@ local function apply(configs)
       end
    end
 
-   for group, setting in pairs(configs.overrides) do
-      groups[group] = setting
+   if type(configs.overrides) == "table" then
+      groups = override_groups(groups, configs.overrides --[[@as HighlightGroups]])
+   elseif type(configs.overrides) == "function" then
+      groups = override_groups(groups, configs.overrides(colors))
    end
 
    -- set defined highlights
@@ -76,22 +89,37 @@ local function apply(configs)
    end
 end
 
-local local_configs = DEFAULT_CONFIG
+---@type DraculaConfig
+local user_configs = {}
+
+--- get dracula configs
+---@return DraculaConfig
+local function get_configs()
+   local configs = DEFAULT_CONFIG
+
+   if g.colors_name == 'dracula-soft' then
+      configs.theme = 'dracula-soft'
+      configs.colors = require('dracula.palette-soft')
+   elseif g.colors_name == 'dracula' then
+      configs.theme = 'dracula'
+      configs.colors = require('dracula.palette')
+   end
+
+   configs = tbl_deep_extend("force", configs, user_configs)
+
+   return configs
+end
 
 ---setup dracula colorscheme
----@param configs DefaultConfig?
+---@param configs DraculaConfig?
 local function setup(configs)
    if type(configs) == "table" then
-      if configs.theme == "dracula-soft" then
-         -- set dracula-soft palette before merging any `configs.color` user overrides to it
-         DEFAULT_CONFIG.colors = require("dracula.palette-soft")
-      end
-      local_configs = tbl_deep_extend("force", DEFAULT_CONFIG, configs) --[[@as DefaultConfig]]
+      user_configs = configs --[[@as DraculaConfig]]
    end
 end
 
 ---load dracula colorscheme
---@param theme string?
+---@param theme string?
 local function load(theme)
    if vim.version().minor < 7 then
       vim.notify_once("dracula.nvim: you must use neovim 0.7 or higher")
@@ -111,17 +139,12 @@ local function load(theme)
    o.termguicolors = true
    g.colors_name = theme or 'dracula'
 
-   if g.colors_name == 'dracula-soft' then
-      local_configs.theme = 'dracula-soft'
-      local_configs.colors = require('dracula.palette-soft')
-   end
-
-   apply(local_configs)
+   apply(get_configs())
 end
 
 return {
    load = load,
    setup = setup,
-   configs = function() return local_configs end,
-   colors = function() return local_configs.colors end,
+   configs = get_configs,
+   colors = function() return get_configs().colors end,
 }

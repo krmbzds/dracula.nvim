@@ -270,7 +270,7 @@ local function setup(configs)
       diffNewFile = { fg = colors.green, },
       diffOldFile = { fg = colors.red, },
 
-      debugPc = { bg = colors.cyan, },
+      debugPc = { bg = colors.menu, },
       debugBreakpoint = { fg = colors.red, reverse = true, },
 
       -- Git Signs
@@ -291,6 +291,9 @@ local function setup(configs)
       TelescopeNormal = { fg = colors.fg, bg = colors.bg, },
       TelescopeMatching = { fg = colors.green, },
       TelescopePromptPrefix = { fg = colors.purple, },
+      TelescopeResultsDiffDelete = { fg = colors.red },
+      TelescopeResultsDiffChange = { fg = colors.cyan },
+      TelescopeResultsDiffAdd = { fg = colors.green },
 
       -- NvimTree
       NvimTreeNormal = { fg = colors.fg, bg = colors.menu, },

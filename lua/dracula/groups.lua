@@ -640,6 +640,18 @@ local function setup(configs)
       SnacksPickerPathHidden = { fg = colors.comment },
       SnacksPickerPrompt = { fg = colors.purple },
       SnacksPickerTitle = { fg = colors.cyan, bold = true },
+
+      -- Neogit
+      NeogitDiffAdd = { fg = colors.bright_green, bg = colors.menu },
+      NeogitDiffDelete = { fg = colors.bright_red, bg = colors.menu },
+      NeogitDiffContext = { fg = colors.comment, bg = colors.visual },
+      NeogitDiffAddHighlight = { fg = colors.green, bg = colors.bg },
+      NeogitDiffDeleteHighlight = { fg = colors.red, bg = colors.bg },
+      NeogitDiffContextHighlight = { fg = colors.comment, bg = colors.visual },
+      NeogitDiffAddCursor = { fg = colors.green, bg = colors.selection },
+      NeogitDiffDeleteCursor = { fg = colors.red, bg = colors.selection },
+      NeogitDiffContextCursor = { fg = colors.comment, bg = colors.selection },
+
    }
 end
 

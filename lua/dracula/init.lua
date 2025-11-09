@@ -5,13 +5,13 @@ local nvim_set_hl = vim.api.nvim_set_hl
 local tbl_deep_extend = vim.tbl_deep_extend
 
 ---@class DraculaConfig
----@field italic_comment boolean
----@field transparent_bg boolean
----@field show_end_of_buffer boolean
----@field lualine_bg_color string?
----@field colors Palette
----@field theme string?
----@field overrides HighlightGroups | fun(colors: Palette): HighlightGroups
+---@field italic_comment? boolean
+---@field transparent_bg? boolean
+---@field show_end_of_buffer? boolean
+---@field lualine_bg_color? string?
+---@field colors? Palette
+---@field theme? string?
+---@field overrides? HighlightGroups | fun(colors: Palette): HighlightGroups
 local DEFAULT_CONFIG = {
    italic_comment = false,
    transparent_bg = false,
@@ -121,8 +121,8 @@ end
 ---load dracula colorscheme
 ---@param theme string?
 local function load(theme)
-   if vim.version().minor < 7 then
-      vim.notify_once("dracula.nvim: you must use neovim 0.7 or higher")
+   if vim.fn.has("nvim-0.7") ~= 1 then
+      vim.notify("dracula.nvim: you must use neovim 0.7 or higher")
       return
    end
 

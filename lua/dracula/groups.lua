@@ -1,27 +1,27 @@
 ---@class Highlight
----@field fg string color name or "#RRGGBB"
----@field foreground string same fg, color name or "#RRGGBB"
----@field bg string color name or "#RRGGBB"
----@field background string same bg, color name or "#RRGGBB"
----@field sp string color name or "#RRGGBB"
----@field special string same sg, color name or "#RRGGBB"
----@field blend integer value between 0 and 100
----@field bold boolean
----@field standout boolean
----@field underline boolean
----@field undercurl boolean
----@field underdouble boolean
----@field underdotted boolean
----@field underdashed boolean
----@field strikethrough boolean
----@field italic boolean
----@field reverse boolean
----@field nocombine boolean
----@field link string name of another highlight group to link to, see |:hi-link|.
----@field default string Don't override existing definition |:hi-default|
----@field ctermfg integer Sets foreground of cterm color |highlight-ctermfg|
----@field ctermbg integer Sets background of cterm color |highlight-ctermbg|
----@field cterm table cterm attribute map, like |highlight-args|.
+---@variable.member fg string color name or "#RRGGBB"
+---@variable.member foreground string same fg, color name or "#RRGGBB"
+---@variable.member bg string color name or "#RRGGBB"
+---@variable.member background string same bg, color name or "#RRGGBB"
+---@variable.member sp string color name or "#RRGGBB"
+---@variable.member special string same sg, color name or "#RRGGBB"
+---@variable.member blend integer value between 0 and 100
+---@variable.member bold boolean
+---@variable.member standout boolean
+---@variable.member underline boolean
+---@variable.member undercurl boolean
+---@variable.member underdouble boolean
+---@variable.member underdotted boolean
+---@variable.member underdashed boolean
+---@variable.member strikethrough boolean
+---@variable.member italic boolean
+---@variable.member reverse boolean
+---@variable.member nocombine boolean
+---@variable.member link string name of another highlight group to link to, see |:hi-link|.
+---@variable.member default string Don't override existing definition |:hi-default|
+---@variable.member ctermfg integer Sets foreground of cterm color |highlight-ctermfg|
+---@variable.member ctermbg integer Sets background of cterm color |highlight-ctermbg|
+---@variable.member cterm table cterm attribute map, like |highlight-args|.
 
 ---@alias HighlightGroups table<string, Highlight>
 
@@ -31,6 +31,8 @@
 ---@nodiscard
 local function setup(configs)
    local colors = configs.colors
+   assert(colors ~= nil, "Must pass colors")
+
    local endOfBuffer = {
       fg = configs.show_end_of_buffer and colors.visual or colors.bg,
    }
@@ -82,7 +84,7 @@ local function setup(configs)
       CursorLine = { bg = colors.selection, },
       ColorColumn = { bg = colors.selection, },
 
-      StatusLine = { fg = colors.white, bg = colors.black, },
+      StatusLine = { fg = colors.white, bg = colors.selection, },
       StatusLineNC = { fg = colors.comment, },
       StatusLineTerm = { fg = colors.white, bg = colors.black, },
       StatusLineTermNC = { fg = colors.comment, },
@@ -95,6 +97,7 @@ local function setup(configs)
 
       ErrorMsg = { fg = colors.bright_red, },
       VertSplit = { fg = colors.black, },
+      WinSeparator = { fg = colors.black, },
       Folded = { fg = colors.comment, },
       FoldColumn = {},
       Search = { fg = colors.black, bg = colors.orange, },
@@ -131,36 +134,37 @@ local function setup(configs)
       ['@error'] = { fg = colors.bright_red, },
       ['@punctuation.delimiter'] = { fg = colors.fg, },
       ['@punctuation.bracket'] = { fg = colors.fg, },
-      ['@punctuation.special'] = { fg = colors.cyan, },
+      ['@markup.list'] = { fg = colors.cyan, },
 
       ['@constant'] = { fg = colors.purple, },
       ['@constant.builtin'] = { fg = colors.purple, },
-      ['@symbol'] = { fg = colors.purple, },
+      ['@markup.link.label.symbol'] = { fg = colors.purple, },
 
       ['@constant.macro'] = { fg = colors.cyan, },
-      ['@string.regex'] = { fg = colors.red, },
+      ['@string.regexp'] = { fg = colors.red, },
       ['@string'] = { fg = colors.yellow, },
       ['@string.escape'] = { fg = colors.cyan, },
+      ['@string.special.symbol'] = { fg = colors.purple, },
       ['@character'] = { fg = colors.green, },
       ['@number'] = { fg = colors.purple, },
       ['@boolean'] = { fg = colors.purple, },
-      ['@float'] = { fg = colors.green, },
+      ['@number.float'] = { fg = colors.green, },
       ['@annotation'] = { fg = colors.yellow, },
       ['@attribute'] = { fg = colors.cyan, },
-      ['@namespace'] = { fg = colors.orange, },
+      ['@module'] = { fg = colors.orange, },
 
       ['@function.builtin'] = { fg = colors.cyan, },
       ['@function'] = { fg = colors.green, },
       ['@function.macro'] = { fg = colors.green, },
-      ['@parameter'] = { fg = colors.orange, },
-      ['@parameter.reference'] = { fg = colors.orange, },
-      ['@method'] = { fg = colors.green, },
-      ['@field'] = { fg = colors.orange, },
+      ['@variable.parameter'] = { fg = colors.orange, },
+      ['@variable.parameter.reference'] = { fg = colors.orange, },
+      ['@function.method'] = { fg = colors.green, },
+      ['@variable.member'] = { fg = colors.orange, },
       ['@property'] = { fg = colors.purple, },
       ['@constructor'] = { fg = colors.cyan, },
 
-      ['@conditional'] = { fg = colors.pink, },
-      ['@repeat'] = { fg = colors.pink, },
+      ['@keyword.conditional'] = { fg = colors.pink, },
+      ['@keyword.repeat'] = { fg = colors.pink, },
       ['@label'] = { fg = colors.cyan, },
 
       ['@keyword'] = { fg = colors.pink, },
@@ -168,30 +172,30 @@ local function setup(configs)
       ['@keyword.function.ruby'] = { fg = colors.pink, },
       ['@keyword.operator'] = { fg = colors.pink, },
       ['@operator'] = { fg = colors.pink, },
-      ['@exception'] = { fg = colors.purple, },
+      ['@keyword.exception'] = { fg = colors.purple, },
       ['@type'] = { fg = colors.bright_cyan, },
       ['@type.builtin'] = { fg = colors.cyan, italic = true, },
       ['@type.qualifier'] = { fg = colors.pink, },
       ['@structure'] = { fg = colors.purple, },
-      ['@include'] = { fg = colors.pink, },
+      ['@keyword.include'] = { fg = colors.pink, },
 
       ['@variable'] = { fg = colors.fg, },
       ['@variable.builtin'] = { fg = colors.purple, },
 
-      ['@text'] = { fg = colors.orange, },
-      ['@text.strong'] = { fg = colors.orange, bold = true, }, -- bold
-      ['@text.emphasis'] = { fg = colors.yellow, italic = true, }, -- italic
-      ['@text.underline'] = { fg = colors.orange, },
-      ['@text.title'] = { fg = colors.pink, bold = true, }, -- title
-      ['@text.literal'] = { fg = colors.yellow, }, -- inline code
-      ['@text.uri'] = { fg = colors.yellow, italic = true, }, -- urls
-      ['@text.reference'] = { fg = colors.orange, bold = true, },
+      ['@markup'] = { fg = colors.orange, },
+      ['@markup.strong'] = { fg = colors.orange, bold = true, },     -- bold
+      ['@markup.emphasis'] = { fg = colors.yellow, italic = true, }, -- italic
+      ['@markup.underline'] = { fg = colors.orange, },
+      ['@markup.heading'] = { fg = colors.pink, bold = true, },        -- title
+      ['@markup.raw'] = { fg = colors.yellow, },                 -- inline code
+      ['@markup.link.url'] = { fg = colors.yellow, italic = true, },      -- urls
+      ['@markup.link'] = { fg = colors.orange, bold = true, },
 
       ['@tag'] = { fg = colors.cyan, },
       ['@tag.attribute'] = { fg = colors.green, },
       ['@tag.delimiter'] = { fg = colors.cyan, },
 
-        -- Semantic 
+      -- Semantic
       ['@class'] = { fg = colors.cyan },
       ['@struct'] = { fg = colors.cyan },
       ['@enum'] = { fg = colors.cyan },
@@ -203,7 +207,7 @@ local function setup(configs)
       ['@typeParameter'] = { fg = colors.cyan },
       ['@decorator'] = { fg = colors.cyan },
 
-        -- LSP Semantic (0.9+)
+      -- LSP Semantic (0.9+)
       ['@lsp.type.class'] = { fg = colors.cyan },
       ['@lsp.type.enum'] = { fg = colors.cyan },
       ['@lsp.type.decorator'] = { fg = colors.green },
@@ -244,12 +248,12 @@ local function setup(configs)
       markdownCode = { fg = colors.green, },
       markdownCodeBlock = { fg = colors.orange, },
       markdownCodeDelimiter = { fg = colors.red, },
-      markdownH1 = { fg = colors.pink, bold = true, },
-      markdownH2 = { fg = colors.pink, bold = true, },
-      markdownH3 = { fg = colors.pink, bold = true, },
-      markdownH4 = { fg = colors.pink, bold = true, },
-      markdownH5 = { fg = colors.pink, bold = true, },
-      markdownH6 = { fg = colors.pink, bold = true, },
+      markdownH2 = { link = "rainbow2" },
+      markdownH1 = { link = "rainbow1" },
+      markdownH3 = { link = "rainbow3" },
+      markdownH4 = { link = "rainbow4" },
+      markdownH5 = { link = "rainbow5" },
+      markdownH6 = { link = "rainbow6" },
       markdownHeadingDelimiter = { fg = colors.red, },
       markdownHeadingRule = { fg = colors.comment, },
       markdownId = { fg = colors.purple, },
@@ -261,6 +265,12 @@ local function setup(configs)
       markdownListMarker = { fg = colors.cyan, },
       markdownOrderedListMarker = { fg = colors.red, },
       markdownRule = { fg = colors.comment, },
+      ['@markup.heading.1.markdown'] = { link = 'rainbowcol1' },
+		['@markup.heading.2.markdown'] = { link = 'rainbowcol2' },
+		['@markup.heading.3.markdown'] = { link = 'rainbowcol3' },
+		['@markup.heading.4.markdown'] = { link = 'rainbowcol4' },
+		['@markup.heading.5.markdown'] = { link = 'rainbowcol5' },
+		['@markup.heading.6.markdown'] = { link = 'rainbowcol6' },
 
       --  Diff
       diffAdded = { fg = colors.green, },
@@ -294,6 +304,9 @@ local function setup(configs)
       TelescopeResultsDiffDelete = { fg = colors.red },
       TelescopeResultsDiffChange = { fg = colors.cyan },
       TelescopeResultsDiffAdd = { fg = colors.green },
+
+      -- Flash
+      FlashLabel =  { bg = colors.red, fg = colors.bright_white },
 
       -- NvimTree
       NvimTreeNormal = { fg = colors.fg, bg = colors.menu, },
@@ -364,6 +377,7 @@ local function setup(configs)
       LspReferenceRead = { fg = colors.orange, },
       LspReferenceWrite = { fg = colors.orange, },
       LspCodeLens = { fg = colors.cyan, },
+      LspInlayHint = { fg = "#969696", bg = "#2f3146" },
 
       --LSP Saga
       LspFloatWinNormal = { fg = colors.fg, },
@@ -386,8 +400,8 @@ local function setup(configs)
       IndentBlanklineContextChar = { fg = colors.bright_red, nocombine = true, },
 
       -- Nvim compe
-      CmpItemAbbrDeprecated = { fg = colors.white, bg = colors.menu, },
-      CmpItemAbbrMatch = { fg = colors.cyan, bg = colors.menu, },
+      CmpItemAbbrDeprecated = { fg = colors.white, bg = colors.bg, },
+      CmpItemAbbrMatch = { fg = colors.cyan, bg = colors.bg, },
 
       -- barbar
       BufferVisibleTarget = { fg = colors.red },
@@ -406,33 +420,64 @@ local function setup(configs)
       CompeDocumentationBorder = { link = "Pmenu" },
 
       -- Cmp
-      CmpItemKind = { link = "Pmenu" },
-      CmpItemAbbr = { link = "Pmenu" },
-      CmpItemKindMethod = { link = "@method" },
-      CmpItemKindText = { link = "@text" },
+      CmpItemAbbr = { fg = colors.white, bg = colors.bg },
+      CmpItemKind = { fg = colors.white, bg = colors.bg },
+      CmpItemKindMethod = { link = "@function.method" },
+      CmpItemKindText = { link = "@markup" },
       CmpItemKindFunction = { link = "@function" },
       CmpItemKindConstructor = { link = "@type" },
       CmpItemKindVariable = { link = "@variable" },
       CmpItemKindClass = { link = "@type" },
       CmpItemKindInterface = { link = "@type" },
-      CmpItemKindModule = { link = "@namespace" },
+      CmpItemKindModule = { link = "@module" },
       CmpItemKindProperty = { link = "@property" },
       CmpItemKindOperator = { link = "@operator" },
-      CmpItemKindReference = { link = "@parameter.reference" },
-      CmpItemKindUnit = { link = "@field" },
-      CmpItemKindValue = { link = "@field" },
-      CmpItemKindField = { link = "@field" },
-      CmpItemKindEnum = { link = "@field" },
+      CmpItemKindReference = { link = "@variable.parameter.reference" },
+      CmpItemKindUnit = { link = "@variable.member" },
+      CmpItemKindValue = { link = "@variable.member" },
+      CmpItemKindField = { link = "@variable.member" },
+      CmpItemKindEnum = { link = "@variable.member" },
       CmpItemKindKeyword = { link = "@keyword" },
-      CmpItemKindSnippet = { link = "@text" },
+      CmpItemKindSnippet = { link = "@markup" },
       CmpItemKindColor = { link = "DevIconCss" },
       CmpItemKindFile = { link = "TSURI" },
       CmpItemKindFolder = { link = "TSURI" },
       CmpItemKindEvent = { link = "@constant" },
-      CmpItemKindEnumMember = { link = "@field" },
+      CmpItemKindEnumMember = { link = "@variable.member" },
       CmpItemKindConstant = { link = "@constant" },
       CmpItemKindStruct = { link = "@structure" },
-      CmpItemKindTypeParameter = { link = "@parameter" },
+      CmpItemKindTypeParameter = { link = "@variable.parameter" },
+
+      -- Blink
+      BlinkCmpLabel = { fg = colors.white, bg = colors.menu },
+      BlinkCmpLabelDeprecated = { fg = colors.white, bg = colors.menu },
+      BlinkCmpLabelMatch = { fg = colors.cyan, bg = colors.menu },
+      BlinkCmpKind = { fg = colors.white, bg = colors.menu },
+      BlinkCmpScrollBarThumb = { bg = colors.fg },
+      BlinkCmpScrollBarGutter = { bg = colors.menu },
+      BlinkCmpKindFunction = { link = "@function" },
+      BlinkCmpKindConstructor = { link = "@type" },
+      BlinkCmpKindVariable = { link = "@variable" },
+      BlinkCmpKindClass = { link = "@type" },
+      BlinkCmpKindInterface = { link = "@type" },
+      BlinkCmpKindModule = { link = "@module" },
+      BlinkCmpKindProperty = { link = "@property" },
+      BlinkCmpKindOperator = { link = "@operator" },
+      BlinkCmpKindReference = { link = "@variable.parameter.reference" },
+      BlinkCmpKindUnit = { link = "@variable.member" },
+      BlinkCmpKindValue = { link = "@variable.member" },
+      BlinkCmpKindField = { link = "@variable.member" },
+      BlinkCmpKindEnum = { link = "@variable.member" },
+      BlinkCmpKindKeyword = { link = "@keyword" },
+      BlinkCmpKindSnippet = { link = "@markup" },
+      BlinkCmpKindColor = { link = "DevIconCss" },
+      BlinkCmpKindFile = { link = "TSURI" },
+      BlinkCmpKindFolder = { link = "TSURI" },
+      BlinkCmpKindEvent = { link = "@constant" },
+      BlinkCmpKindEnumMember = { link = "@variable.member" },
+      BlinkCmpKindConstant = { link = "@constant" },
+      BlinkCmpKindStruct = { link = "@structure" },
+      BlinkCmpKindTypeParameter = { link = "@variable.parameter" },
 
       -- navic
       NavicIconsFile = { link = "CmpItemKindFile" },
@@ -466,19 +511,72 @@ local function setup(configs)
       NavicSeparator = { fg = 'gray' },
 
       -- TS rainbow colors
-      rainbowcol1 = { fg = colors.red, },
-      rainbowcol2 = { fg = colors.green, },
-      rainbowcol3 = { fg = colors.yellow, },
-      rainbowcol4 = { fg = colors.purple, },
-      rainbowcol5 = { fg = colors.pink, },
-      rainbowcol6 = { fg = colors.cyan, },
-      rainbowcol7 = { fg = colors.white, },
+      rainbowcol1 = { fg = colors.fg },
+      rainbowcol2 = { fg = colors.pink },
+      rainbowcol3 = { fg = colors.cyan },
+      rainbowcol4 = { fg = colors.green },
+      rainbowcol5 = { fg = colors.purple },
+      rainbowcol6 = { fg = colors.orange },
+      rainbowcol7 = { fg = colors.fg },
+
+      -- Rainbow delimiter
+      RainbowDelimiterRed = { fg = colors.fg },
+      RainbowDelimiterYellow = {fg = colors.pink },
+      RainbowDelimiterBlue = {fg = colors.cyan },
+      RainbowDelimiterOrange = { fg = colors.green },
+      RainbowDelimiterGreen = { fg = colors.purple },
+      RainbowDelimiterViolet = { fg = colors.orange },
+      RainbowDelimiterCyan = { fg = colors.fg },
+
+      -- mini.indentscope
+      MiniIndentscopeSymbol = { fg = "#B5629B" },
+      MiniIndentscopeSymbolOff = { fg = "#B5629B" },
+
+      -- mini.icons
+      MiniIconsAzure = { fg = colors.bright_cyan },
+      MiniIconsBlue = { fg = colors.bright_blue },
+      MiniIconsCyan = { fg = colors.cyan },
+      MiniIconsGrey = { fg = colors.white },
+      MiniIconsOrange = { fg = colors.orange },
+      MiniIconsPurple = { fg = colors.purple },
+      MiniIconsRed = { fg = colors.red },
+      MiniIconsYellow = { fg = colors.yellow },
+
+      -- mini.statusline
+      MiniStatuslineModeNormal = { fg = colors.black, bg = colors.purple, bold = true },
+      MiniStatuslineModeInsert = { fg = colors.black, bg = colors.green, bold = true },
+      MiniStatuslineModeVisual = { fg = colors.black, bg = colors.pink, bold = true },
+      MiniStatuslineModeReplace = { fg = colors.black, bg = colors.yellow, bold = true },
+      MiniStatuslineModeCommand = { fg = colors.black, bg = colors.cyan, bold = true },
+      MiniStatuslineInactive = { fg = colors.fg, bg = colors.visual, bold = true },
+      MiniStatuslineDevinfo = { fg = colors.purple, bg = colors.black },
+      MiniStatuslineFilename = { fg = colors.white, bg = colors.black },
+      MiniStatuslineFileinfo = { fg = colors.purple, bg = colors.black },
+
+      -- mini.files
+      MiniFilesNormal = { fg = colors.fg, bg = colors.menu },
+      MiniFilesBorder = { fg = colors.purple, bg = colors.menu },
+      MiniFilesBorderModified = { },
+      MiniFilesCursorLine = { bg = colors.selection, },
+      MiniFilesDirectory = { fg = colors.fg },
+      MiniFilesFile = { fg = colors.fg },
+      MiniFilesTitle = { fg = colors.fg },
+      MiniFilesTitleFocused = { fg = colors.yellow },
 
       -- goolord/alpha-nvim
       AlphaHeader = { fg = colors.purple },
       AlphaButtons = { fg = colors.cyan },
       AlphaShortcut = { fg = colors.orange },
       AlphaFooter = { fg = colors.purple, italic = true },
+
+      -- nvimdev/dashboard-nvim
+      DashboardShortCut = { fg = colors.cyan },
+      DashboardHeader = { fg = colors.purple },
+      DashboardCenter = { fg = colors.fg },
+      DashboardFooter = { fg = colors.purple, italic = true },
+      DashboardKey = { fg = colors.orange },
+      DashboardDesc = { fg = colors.cyan },
+      DashboardIcon = { fg = colors.cyan, bold = true },
 
       -- dap UI
       DapUIPlayPause = { fg = colors.bright_green },
@@ -516,10 +614,47 @@ local function setup(configs)
       NotifyWarnIcon = { fg = colors.orange },
       NotifyWarnTitle = { fg = colors.orange },
       NotifyWarnBorder = { fg = "#785637" },
+
+      -- SnacksDashboard
+      SnacksDashboardHeader = { fg = colors.purple },
+      SnacksDashboardKey = { fg = colors.orange },
+      SnacksDashboardDesc = { fg = colors.cyan },
+      SnacksDashboardIcon = { fg = colors.cyan },
+      SnacksDashboardFooter = { fg = colors.purple, italic = true },
+
+      -- SnacksPicker
+      SnacksBackdrop = { link = "FloatShadow" },
+      SnacksPickerBorder = { fg = colors.comment },
+      SnacksPickerDir = { fg = colors.fg },
+      SnacksPickerDirectory = { fg = colors.fg },
+      SnacksPickerFile = { fg = colors.fg },
+      SnacksPickerGitStatusIgnored = { fg = colors.comment },
+      SnacksPickerGitStatusModified = { fg = colors.yellow },
+      SnacksPickerGitStatusRenamed = { fg = colors.yellow },
+      SnacksPickerGitStatusStaged = { fg = colors.bright_green },
+      SnacksPickerGitStatusUnmerged = { fg = colors.orange },
+      SnacksPickerGitStatusUntracked = { fg = colors.green },
+      SnacksPickerInput = { link = "NormalFloat" },
+      SnacksPickerInputBorder = { link = "SnacksPickerBorder" },
+      SnacksPickerMatch = { fg = colors.green, italic = true },
+      SnacksPickerPathHidden = { fg = colors.comment },
+      SnacksPickerPrompt = { fg = colors.purple },
+      SnacksPickerTitle = { fg = colors.cyan, bold = true },
+
+      -- Neogit
+      NeogitDiffAdd = { fg = colors.bright_green, bg = colors.menu },
+      NeogitDiffDelete = { fg = colors.bright_red, bg = colors.menu },
+      NeogitDiffContext = { fg = colors.comment, bg = colors.visual },
+      NeogitDiffAddHighlight = { fg = colors.green, bg = colors.bg },
+      NeogitDiffDeleteHighlight = { fg = colors.red, bg = colors.bg },
+      NeogitDiffContextHighlight = { fg = colors.comment, bg = colors.visual },
+      NeogitDiffAddCursor = { fg = colors.green, bg = colors.selection },
+      NeogitDiffDeleteCursor = { fg = colors.red, bg = colors.selection },
+      NeogitDiffContextCursor = { fg = colors.comment, bg = colors.selection },
+
    }
 end
 
 return {
    setup = setup,
 }
-

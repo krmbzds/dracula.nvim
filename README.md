@@ -7,8 +7,10 @@
 
 ## ✔️ Requirements
 
-- Neovim >= 0.8.0
+- Neovim >= 0.9.2
 - Treesitter (optional)
+
+NOTICE: if you use an older version of neovim (>=0.8.0 <0.9.2), you can pin this plugin to [commit 8fc749](https://github.com/Mofiqul/dracula.nvim/commit/8fc749e2479d62829c9c627867770035b74529a4)
 
 ## #️ Supported Plugins
 
@@ -16,6 +18,7 @@
 - [Treesitter](https://github.com/nvim-treesitter/nvim-treesitter)
 - [nvim-compe](https://github.com/hrsh7th/nvim-compe)
 - [nvim-cmp](https://github.com/hrsh7th/nvim-cmp)
+- [blink.cmp](https://github.com/Saghen/blink.cmp/)
 - [Telescope](https://github.com/nvim-telescope/telescope.nvim)
 - [NvimTree](https://github.com/kyazdani42/nvim-tree.lua)
 - [NeoTree](https://github.com/nvim-neo-tree/neo-tree.nvim)
@@ -27,6 +30,9 @@
 - [nvim-ts-rainbow](https://github.com/p00f/nvim-ts-rainbow)
 - [Barbecue](https://github.com/utilyre/barbecue.nvim)
 - [nvim-dap-ui](https://github.com/rcarriga/nvim-dap-ui)
+- [mini.indentcope](https://github.com/echasnovski/mini.indentcope)
+- [mini.icons](https://github.com/echasnovski/mini.icons)
+- [mini.statusline](https://github.com/echasnovski/mini.statusline)
 
 ## ⬇️ Installation
 
@@ -69,6 +75,22 @@ require('lualine').setup {
     theme = 'dracula-nvim'
     -- ...
   }
+}
+```
+
+If you are using [LazyVim](https://github.com/LazyVim/LazyVim), you can add this to your plugins/colorscheme.lua file:
+```lua
+return {
+  -- add dracula
+  { "Mofiqul/dracula.nvim" },
+
+  -- Configure LazyVim to load dracula
+  {
+    "LazyVim/LazyVim",
+    opts = {
+      colorscheme = "dracula",
+    },
+  },
 }
 ```
 
